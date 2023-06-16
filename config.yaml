@@ -1,0 +1,21 @@
+setting:
+  mode: "develop"
+server:
+  host: "localhost"
+  port: 5050
+db:
+  host: 49.235.111.92
+  port: 3306
+  username: root
+  password: qazxcv
+  database: gin-basic-framework
+jwt:
+  signing-key: ea434ded-837b-4181-a4a0-bdb8dca43738
+  expires-time: 7d
+  buffer-time: 1d
+  issuer: qmPlus
+#cors:
+#  allow-origins: "http://localhost:8080"
+#  allow-methods: "GET", "POST", "PUT", "DELETE"
+#  allow-headers: "Origin", "Content-Type"
+#  expose-headers: "Content-Length"
