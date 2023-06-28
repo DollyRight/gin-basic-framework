@@ -1,7 +1,6 @@
 package initialize
 
 import (
-	"fmt"
 	"gin-basic-framework/global"
 	"gin-basic-framework/model"
 	"gorm.io/driver/mysql"
@@ -31,7 +30,7 @@ func RegisterTables() {
 		model.User{},
 	)
 	if err != nil {
-		fmt.Println("register table failed")
+		global.GLOBAL_LOGGER.Info("register table failed")
 	}
-	fmt.Println("register table suceess")
+	global.GLOBAL_LOGGER.Info("register table suceess")
 }
