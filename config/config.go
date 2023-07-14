@@ -5,4 +5,5 @@ type Config struct {
 	Server  Server  `mapstructure:"server" json:"server" yaml:"server"`
 	DB      DB      `mapstructure:"db" json:"db" yaml:"db"`
 	JWT     JWT     `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
+	NSQ     NSQ     `mapstructure:"nsq" json:"nsq" yaml:"nsq"`
 }

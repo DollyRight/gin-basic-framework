@@ -1,6 +1,7 @@
 package core
 
 import (
+	"gin-basic-framework/global"
 	"gin-basic-framework/initialize"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -11,7 +12,7 @@ type server interface {
 	ListenAndServe() error
 }
 
-func initServer(address string, router *gin.Engine) server {
+func InitServer(address string, router *gin.Engine) server {
 
 	return &http.Server{
 		Addr:           address,
@@ -26,7 +27,7 @@ func initServer(address string, router *gin.Engine) server {
 
 func StartServer() {
 	router := initialize.Router()
-	address := "127.0.0.1:5555"
-	server := initServer(address, router)
+	address := global.GLOBAL_CONFIG.Server.AddressProvider()
+	server := InitServer(address, router)
 	server.ListenAndServe()
 }

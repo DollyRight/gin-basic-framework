@@ -1,13 +1,16 @@
-package service
+package v1
 
 import (
 	"fmt"
 	"gin-basic-framework/global"
 	"gin-basic-framework/model"
+	"gin-basic-framework/model/common/response"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strconv"
 )
+
+type UserApi struct {
+}
 
 // CreateUser 创建用户接口
 // @Summary 创建新用户
@@ -19,19 +22,20 @@ import (
 // @Param email formData string true "电子邮件"
 // @Success 200 {object} gin.H
 // @Router /api/v1/user [post]
-func CreateUser(c *gin.Context) {
+func (userApi *UserApi) CreateUser(c *gin.Context) {
 	newUserInfo := make(map[string]interface{})
 	newUserInfo["username"] = c.PostForm("username")
 	newUserInfo["password"] = c.PostForm("password")
 	newUserInfo["email"] = c.PostForm("email")
 
-	status := model.AddUser(newUserInfo)
-	if status {
+	_, err := model.AddUser(newUserInfo)
+	if err != nil {
+		strErr := fmt.Sprint(err)
+		global.GLOBAL_LOGGER.Error(strErr)
+		response.FailWithMessage(strErr, c)
+	} else {
 		global.GLOBAL_LOGGER.Info("User has been created successfully")
-		c.JSON(http.StatusOK, gin.H{
-			"code": 200,
-			"msg":  "successfully create a new user",
-		})
+		response.OkWithMessage("User has been created successfully", c)
 	}
 
 }
@@ -46,37 +50,25 @@ func CreateUser(c *gin.Context) {
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Router /api/v1/user/{id} [get]
-func GetUser(c *gin.Context) {
+func (userApi *UserApi) GetUser(c *gin.Context) {
 	userID := c.Param("id")
 	fmt.Println(userID)
 	// 将字符串类型的用户ID转换为uint类型
 	id, err := strconv.ParseUint(userID, 10, 32)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": http.StatusBadRequest,
-			"msg":  "Invalid user ID",
-		})
-		return
-	}
+		response.FailWithMessage("Invalid user ID", c)
 
+	}
 	// 调用GetUserByID方法从数据库中获取用户信息
 	user, err := model.GetUserByID(uint(id))
 	if err != nil {
 		global.GLOBAL_LOGGER.Info("User not found")
-		c.JSON(http.StatusNotFound, gin.H{
-			"code": http.StatusNotFound,
-			"msg":  "User not found",
-		})
-		return
+		response.FailWithMessage("User not found", c)
 	}
-
 	// 返回用户信息给客户端
-	c.JSON(http.StatusOK, gin.H{
-		"code": http.StatusOK,
-		"data": user,
-	})
+	response.OkWithDetailed(user, "User has been get", c)
 }
 
-func DeleteUser(c *gin.Context) {
+func (userApi *UserApi) DeleteUser(c *gin.Context) {
 
 }

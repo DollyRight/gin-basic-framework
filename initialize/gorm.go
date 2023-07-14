@@ -30,7 +30,7 @@ func RegisterTables() {
 		model.User{},
 	)
 	if err != nil {
-		global.GLOBAL_LOGGER.Info("register table failed")
+		global.GLOBAL_LOGGER.Fatal("register table failed")
 	}
 	global.GLOBAL_LOGGER.Info("register table suceess")
 }

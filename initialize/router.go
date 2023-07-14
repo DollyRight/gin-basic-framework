@@ -49,9 +49,9 @@ func Router() *gin.Engine {
 	//加载路由组
 	apiv1 := router.Group("/api/v1")
 	apiv1.GET("/refresh_token", authMiddleware.RefreshHandler)
-	apiv1.Use(authMiddleware.MiddlewareFunc())
+	//apiv1.Use(authMiddleware.MiddlewareFunc())
 	{
-		v1.InitUserRouter(apiv1)
+		v1.InitApiV1Router(apiv1)
 	}
 
 	return router
